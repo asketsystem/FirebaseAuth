@@ -2,10 +2,21 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { KeyboardAvoidingView, TextInput } from "react-native-web";
 import { TouchableOpacity } from "react-native";
+import { auth } from "../firebase";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleSignUp = () => {
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log(user.email);
+      })
+      .catch((error) => alert(error.message));
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -30,7 +41,7 @@ const LoginScreen = () => {
           <Text style={styles.buttonOutlineText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => {}}
+          onPress={handleSignUp}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
